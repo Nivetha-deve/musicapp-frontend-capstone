@@ -1,12 +1,15 @@
 import { useFormik } from "formik";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { userRegister } from "./api";
+import { useDispatch } from "react-redux";
+import { setUser } from "./store/reducer/UserRedux";
 
 const RegisterForm = () => {
 
-  const isLogged = Boolean(localStorage.getItem("token"))
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const isLogged = Boolean(localStorage.getItem("token"))
 
   const validate = (values) => {
     const errors = {};
@@ -50,15 +53,11 @@ const RegisterForm = () => {
       },
       validate,
   onSubmit: async (values, { setSubmitting, resetForm }) => {
-   // const { confirmPassword, ...userData } = values;
     try {
       const data = await userRegister(values);
       if (data.token) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        dispatch(setUser(data));
         navigate("/login");
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
         resetForm();
       } else {
         console.log("Registration failed", data);
@@ -71,9 +70,8 @@ const RegisterForm = () => {
   },
 });
 
-  
   if(isLogged) {
-    return <Navigate to={"/login"} />
+   <Navigate to={"/login"} />
   }
 
 return(
