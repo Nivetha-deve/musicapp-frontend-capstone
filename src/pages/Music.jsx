@@ -1,16 +1,13 @@
-import { useState, useEffect } from 'react';
+// Music.js
+
+import  { useState } from 'react';
 
 const Music = () => {
   const [query, setQuery] = useState('');
-  const [songs, setSongs] = useState([]);
-  const [currentSong, setCurrentSong] = useState(null);
+  const [artistInfo, setArtistInfo] = useState(null);
+  const [error, setError] = useState(null);
 
-  const baseURL = 'http://localhost:8000/api/search';
-
-  useEffect(() => {
-    // Automatically initiate OAuth flow when the component mounts
-    window.location.href = 'http://localhost:8000';
-  }, []);
+  const baseURL = 'http://localhost:8000/api/artist-info';
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);
@@ -18,55 +15,46 @@ const Music = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await fetch(`${baseURL}?q=${encodeURIComponent(query)}`);
+      const url = new URL(baseURL);
+      url.searchParams.append('artist', query);
+
+      const response = await fetch(url.toString());
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      const data = await response.json();
-      console.log('Fetched data:', data); 
-      setSongs(data.data || []);
-    } catch (error) {
-      console.error('Error fetching songs:', error);
-      setSongs([]);
-    }
-  };
 
-  const playSong = (songPreviewUrl) => {
-    setCurrentSong(songPreviewUrl);
+      const data = await response.json();
+      setArtistInfo(data);
+    } catch (error) {
+      setError('Error fetching artist information');
+      console.error('Error:', error);
+    }
   };
 
   return (
     <div className="App">
-      <h1>Music Player</h1>
+      <h1>Last.fm Artist Info</h1>
       <div className="search-bar">
         <input
           type="text"
-          placeholder="Search for a song"
+          placeholder="Enter artist name"
           value={query}
           onChange={handleInputChange}
         />
         <button onClick={handleSearch}>Search</button>
       </div>
-      <div className="song-list">
-        {songs.length === 0 ? (
-          <p>No songs found. Try a different search term.</p>
-        ) : (
-          songs.map((song) => (
-            <div key={song.id} className="song-item" onClick={() => playSong(song.preview)}>
-              <p>{song.title} - {song.artist.name}</p>
-            </div>
-          ))
-        )}
-      </div>
-      {currentSong && (
-        <audio controls autoPlay>
-          <source src={currentSong} type="audio/mp3" />
-          Your browser does not support the audio element.
-        </audio>
+      {error && <p>{error}</p>}
+      {artistInfo && (
+        <div>
+          <h2>{artistInfo.artist.name}</h2>
+          <p>{artistInfo.artist.bio.summary}</p>
+          <p>Listeners: {artistInfo.artist.stats.listeners}</p>
+          <p>Playcount: {artistInfo.artist.stats.playcount}</p>
+        </div>
       )}
     </div>
   );
-}
+};
 
 export default Music;
 
