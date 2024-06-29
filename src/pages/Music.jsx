@@ -7,7 +7,7 @@ const Music = () => {
   const [artistInfo, setArtistInfo] = useState(null);
   const [error, setError] = useState(null);
 
-  const baseURL = 'http://localhost:8000/api/artist-info';
+  const baseURL = import.meta.env.VITE_BE_URL + '/api/artist-info';
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);
@@ -15,14 +15,10 @@ const Music = () => {
 
   const handleSearch = async () => {
     try {
-      const url = new URL(baseURL);
-      url.searchParams.append('artist', query);
-
-      const response = await fetch(url.toString());
+      const response = await fetch(`${baseURL}?artist=${encodeURIComponent(query)}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
       const data = await response.json();
       setArtistInfo(data);
     } catch (error) {
@@ -55,7 +51,6 @@ const Music = () => {
     </div>
   );
 };
-
 export default Music;
 
 
