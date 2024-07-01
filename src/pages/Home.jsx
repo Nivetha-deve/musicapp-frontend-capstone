@@ -10,12 +10,12 @@ const Home = () => {
     };
 
     const image =[
-        "https://png.pngtree.com/thumb_back/fh260/background/20221224/pngtree-blue-musical-notes-background-image_1530362.jpg",
-        "https://png.pngtree.com/background/20210717/original/pngtree-blue-creative-music-background-picture-image_1438100.jpg",
-        "https://i.pinimg.com/736x/ae/f0/4d/aef04dfe189d04b1e2124899ff205529.jpg",
-        "https://img.freepik.com/premium-photo/abstract-music-background-blue-abstract-background-with-music-notes_1028938-4323.jpg",
-        "https://st2.depositphotos.com/4510363/6778/i/450/depositphotos_67782203-stock-photo-treble-clef-surrounded-by-musical.jpg"
-    ];
+            "https://t4.ftcdn.net/jpg/02/05/69/11/360_F_205691115_iJyspHIl91dt7Hv9ReSsvjRoMqrt740f.jpg",
+            "https://png.pngtree.com/png-clipart/20200701/original/pngtree-red-creative-texture-abstract-musical-note-png-image_5351202.jpg",
+            "https://www.kindpng.com/picc/m/10-101867_transparent-music-notes-clipart-png-music-notes-clipart.png",
+            "https://e7.pngegg.com/pngimages/645/309/png-clipart-musical-note-staff-clave-de-sol-music-notes-love-miscellaneous.png",
+            "https://png.pngtree.com/background/20210712/original/pngtree-gradient-light-blue-abstract-musical-notes-background-picture-image_1178006.jpg"  
+          ];
 
     const [currentImage, setCurrentImage] = useState(0);
 
@@ -28,14 +28,20 @@ const Home = () => {
     }, [image.length]);
 
     return(
-        <div>
-        <div>
-            <img src={image[currentImage]} alt={`Slide ${currentImage}`} style={{width:800, height:400 }}></img>
-        </div>
-        <h1>Welcome to Music App</h1>
-        <button onClick={handlenavigate}>Click here to view Music</button>
-        </div>
-    );
-}
+<div className="home-container">
+      <div className="image-wrapper">
+        <img
+          src={image[currentImage]}
+          alt={`Slide ${currentImage}`}
+          className="image"
+        />
+      </div>
+      <h1 className="title">Music App</h1>
+      <button onClick={handlenavigate} className="btn-music">
+        Click to view Music
+      </button>
+    </div>
+  );
+};
 
 export default Home;

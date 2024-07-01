@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { userRegister } from "./api";
 import { useDispatch } from "react-redux";
 import { setUser } from "./store/reducer/UserRedux";
+import "../App.css"
 
 const RegisterForm = () => {
 
@@ -189,7 +190,7 @@ return(
               )}
             </div>
             <button type="submit" className="btn btn-primary">Register</button>
-            <Link to="/login" >Register</Link>  
+            <Link to="/login" className="btn-login" style={{ fontSize: 20, margin: 20,}} >Login</Link>  
         </form>
         </div>
         </div>

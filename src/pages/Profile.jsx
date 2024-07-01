@@ -2,8 +2,8 @@ import { useState } from "react";
 import { updateUser } from "./api";
 
 const Profile = () => {
-   const initialProfile = JSON.parse(localStorage.getItem('user'));
-  
+  const initialProfile = JSON.parse(localStorage.getItem('user'));
+
   const [profile, setProfile] = useState(initialProfile);
   const [editMode, setEditMode] = useState(false);
   const [tempProfile, setTempProfile] = useState(initialProfile);

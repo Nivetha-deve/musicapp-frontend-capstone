@@ -1,151 +1,142 @@
-// Music.js
 
-import  { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch , useSelector} from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { addSongToPlaylist } from '../playlistForm';
+import ReactPlayer from 'react-player';
+//import Playlist from './Playlist';
+//import PlaylistPage from './PlaylistPage';
 
+//import ReactPlayer from 'react-player';
 const Music = () => {
   const [query, setQuery] = useState('');
-  const [artistInfo, setArtistInfo] = useState(null);
-  const [error, setError] = useState(null);
+  const [type, setType] = useState('track');
+  const [results, setResults] = useState([]);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const [shuffle, setShuffle] = useState(false);
+  const [repeat, setRepeat] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const playlists = useSelector(state => state.playlists && state.playlists.playlists);
 
-  const baseURL = import.meta.env.VITE_BE_URL + '/api/artist-info';
+  const currentPlaylist = playlists && playlists['My Playlist'] ? playlists['My Playlist'] : [];
 
-  const handleInputChange = (event) => {
-    setQuery(event.target.value);
-  };
 
-  const handleSearch = async () => {
+  useEffect(() => {
+    setCurrentSongIndex(0); // Reset current song index when playlist changes
+    setPlaying(true); // Auto play the first song when playlist changes
+  }, [currentPlaylist]);
+
+
+  const searchMusic = async () => {
+    setError('');
+    setLoading(true);
+
     try {
-      const response = await fetch(`${baseURL}?artist=${encodeURIComponent(query)}`);
+      const response = await fetch(`http://localhost:8000/api/search?q=${query}&type=${type}`);
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(`Error: ${response.statusText}`);
       }
+
       const data = await response.json();
-      setArtistInfo(data);
+      setResults(data[type + "s"]?.items || []);
     } catch (error) {
-      setError('Error fetching artist information');
-      console.error('Error:', error);
+      console.error('Error fetching data from server:', error.message);
+      setError('Failed to fetch data from server.');
+    } finally {
+      setLoading(false);
     }
   };
+  const handleAddSong = (song) => {
+      dispatch(addSongToPlaylist({ song }));
+      navigate("/playlists");
+    };
+
+    const togglePlayPause = () => {
+      setPlaying(!playing);
+    };
+  
+    const playNextSong = () => {
+      let newIndex = currentSongIndex + 1;
+      if (shuffle) {
+        newIndex = Math.floor(Math.random() * results.length);
+      } else if (repeat && newIndex >= results.length) {
+        newIndex = 0;
+      }
+  
+      if (newIndex >= results.length) {
+        setPlaying(false); // Stop playing when playlist ends
+      } else {
+        setCurrentSongIndex(newIndex);
+        setPlaying(true); // Auto play the next song
+      }
+    };
+  
+    const handleEnded = () => {
+      playNextSong();
+    };
+  
+    const toggleShuffle = () => {
+      setShuffle(!shuffle);
+    };
+  
+    const toggleRepeat = () => {
+      setRepeat(!repeat);
+    };
+  
 
   return (
-    <div className="App">
-      <h1>Last.fm Artist Info</h1>
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Enter artist name"
-          value={query}
-          onChange={handleInputChange}
-        />
-        <button onClick={handleSearch}>Search</button>
+    <div className="music-search">
+      <h1>Search Music</h1>
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder={`Search ${type}s...`}
+      />
+      <select value={type} onChange={(e) => setType(e.target.value)}>
+        <option value="track">Song Title</option>
+        <option value="artist">Artist</option>
+        <option value="album">Album</option>
+      </select>
+      <button onClick={searchMusic} disabled={loading}>
+        {loading ? 'Searching...' : 'Search'}
+      </button>
+      {error && <p style={{ color: 'black' }}>{error}</p>}
+      {loading && <p>Loading...</p>}
+      <div className="results">
+         {results.map((item, index) => (
+          <div key={item.id}>
+            {type === 'track' && (
+              <>
+                <p>{item.name} by {item.artists.map(artist => artist.name).join(', ')}</p>
+                {item.preview_url && <ReactPlayer controls playing={playing && currentSongIndex === index} url={item.preview_url} onEnded={handleEnded} />}
+                <button onClick={() => handleAddSong(item)}>+</button>
+              </>
+            )}
+            {type === 'artist' && (
+              <p>{item.name}</p>
+            )}
+            {type === 'album' && (
+              <p>{item.name} by {item.artists.map(artist => artist.name).join(', ')}</p>
+            )} 
+          </div>
+        ))}
       </div>
-      {error && <p>{error}</p>}
-      {artistInfo && (
-        <div>
-          <h2>{artistInfo.artist.name}</h2>
-          <p>{artistInfo.artist.bio.summary}</p>
-          <p>Listeners: {artistInfo.artist.stats.listeners}</p>
-          <p>Playcount: {artistInfo.artist.stats.playcount}</p>
-        </div>
-      )}
+      <div className="player-controls">
+        <button onClick={togglePlayPause}>{playing ? 'Pause' : 'Play'}</button>
+        <button onClick={playNextSong}>Next</button>
+        <button onClick={toggleShuffle}>{shuffle ? 'Shuffle On' : 'Shuffle Off'}</button>
+        <button onClick={toggleRepeat}>{repeat ? 'Repeat On' : 'Repeat Off'}</button>
+    </div>
     </div>
   );
 };
+
 export default Music;
-
-
-// import { useState } from 'react';
-
-// const Music = () => {
-//   const [query, setQuery] = useState('');
-//   const [songs, setSongs] = useState([]);
-//   const [currentSong, setCurrentSong] = useState(null);
-//   const [error, setError] = useState('');
-
-//   const baseURL = 'http://localhost:8000/api/search';
-
-//   // Function to handle search input change
-//   const handleInputChange = (event) => {
-//     setQuery(event.target.value);
-//   };
-
-//   // Function to handle search button click
-//   const handleSearch = async () => {
-//     try {
-//       const response = await fetch(`${baseURL}?q=${encodeURIComponent(query)}`, {
-//         headers: {
-//           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-//         }
-//       });
-
-//       if (!response.ok) {
-//         // Check for specific OAuth error
-//         if (response.status === 401) {
-//           throw new Error('Invalid OAuth access token');
-//         } else {
-//           throw new Error('Network response was not ok');
-//         }
-//       }
-
-//       const data = await response.json();
-//       console.log('Fetched data:', data);
-
-//       if (data.error && data.error.code === 300) {
-//         setError('Invalid OAuth access token. Please log in again.');
-//         setSongs([]);
-//       } else {
-//         setSongs(data.data || []);
-//         setError('');
-//       }
-//     } catch (error) {
-//       console.error('Error fetching songs:', error);
-//       setError(error.message);
-//       setSongs([]);
-//     }
-//   };
-
-//   // Function to handle song selection and play
-//   const playSong = (songPreviewUrl) => {
-//     setCurrentSong(songPreviewUrl);
-//   };
-
-//   return (
-//     <div className="App">
-//       <h1>Music Player</h1>
-//       <div className="search-bar">
-//         <input
-//           type="text"
-//           placeholder="Search for a song"
-//           value={query}
-//           onChange={handleInputChange}
-//         />
-//         <button onClick={handleSearch}>Search</button>
-//       </div>
-//       <div className="song-list">
-//         {error && <p className="error">{error}</p>}
-//         {songs.length === 0 && !error ? (
-//           <p>No songs found. Try a different search term.</p>
-//         ) : (
-//           songs.map((song) => (
-//             <div key={song.id} className="song-item" onClick={() => playSong(song.preview)}>
-//               <p>{song.title} - {song.artist.name}</p>
-//             </div>
-//           ))
-//         )}
-//       </div>
-//       {currentSong && (
-//         <audio controls autoPlay>
-//           <source src={currentSong} type="audio/mp3" />
-//           Your browser does not support the audio element.
-//         </audio>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default Music;
-
-
 
 
 

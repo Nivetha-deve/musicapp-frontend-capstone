@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { userLogin } from './api';
 import { useDispatch } from 'react-redux';
 import { setUser } from './store/reducer/UserRedux';
-
+import "../App"
 
 const LoginForm = () => {
   
@@ -82,7 +82,7 @@ const LoginForm = () => {
                 )}
                 </div>
                 <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>Login</button>
-            <Link to="/register" >Register</Link>
+            <Link to="/register" className='btn-login' style={{margin: 20, fontSize: 20}} >Register</Link>
           </form>
           </div>
           </div>

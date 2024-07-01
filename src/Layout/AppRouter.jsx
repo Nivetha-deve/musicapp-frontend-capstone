@@ -6,6 +6,7 @@ import Layout from "./Layout.jsx";
 import Home from "../pages/Home.jsx";
 import Profile from "../pages/Profile.jsx";
 import Music from "../pages/Music.jsx";
+import PlaylistPage from "../pages/PlaylistPage.jsx";
 
 
 const ProtectedRoute = ({element}) => {
@@ -26,6 +27,7 @@ const AppRouter = () => {
             <Route index element={< Home/>} />
             <Route path="profile" element={<Profile />} /> 
             <Route path= "music" element={<Music/>} />
+            <Route path="playlists" element= {<PlaylistPage/>} />
             </Route>
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
