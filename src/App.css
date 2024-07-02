@@ -171,7 +171,7 @@ body {
   }
   h1{
     position: relative;
-    left: 30px;
+    left: 190px;
   }
   .btn-music{
     background-color: rgb(235, 26, 26);
@@ -179,7 +179,7 @@ body {
     position: relative;
     left: 30px;
     border: none;
-    color: #050505;
+    color: #0f0e0e;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -213,3 +213,26 @@ body {
     font-size: 32px;
     color: #070606;
   }
+  .player-controls{
+     display:flex; 
+    gap:1rem;
+    position: relative;
+    bottom: 450px;
+    left: 110px;
+  }
+  .results{
+    height: 500px;
+  } 
+
+ .music-search{
+  height: 300px;
+} 
+
+.music-play{
+  position: relative;
+  left: 150px;
+}
+.music-main{
+  position: relative;
+  top: 190px;
+}

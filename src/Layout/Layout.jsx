@@ -19,7 +19,7 @@ const links = [
     {
       name: "PlayList",
       path:"/playlists",
-      iocn:<i className="fa-solid fa-plus-minus nav-icon"></i>
+      icon:<i className="fa-solid fa-play nav-icon"></i>
     },
 ];
 
