@@ -23,11 +23,11 @@ const playlistForm = createSlice({
     },
     removeSongFromPlaylist: (state, action) => {
       const { playlistName, songId } = action.payload;
-      if (state[playlistName]) {
+      //if (state[playlistName]) {
       state[playlistName] = state[playlistName].filter(song => song.id !== songId);
     }
   }
-  }
+  //}
 });
 
 export const { createPlaylist, addSongToPlaylist, removeSongFromPlaylist } = playlistForm.actions;

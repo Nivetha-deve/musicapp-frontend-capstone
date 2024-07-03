@@ -1,9 +1,9 @@
-import { UPDATE_LIKED_STATE, COMMENT_SUBMITTED, COMMENT_FAILED } from "../musicAction.js" ;
+import { UPDATE_LIKED_STATE, COMMENT_SUBMITTED, COMMENT_FAILED} from "../musicAction.js"
 
 // Initial state
 const initialState = {
   likedSongs: [], // Array to hold liked song indices
-  comments: {}, // Object to hold comments for each song indexed by song index
+  comment: {}, // Object to hold comments for each song indexed by song index
   error: null, // Error state for comment submission
 };
 
@@ -23,7 +23,7 @@ const musicReducer = (state = initialState, action) => {
       return {
         ...state,
         comments: {
-          ...state.comments,
+          ...state.comment,
           [index]: comment,
         },
         error: null, // Clear error on successful comment submission
@@ -40,5 +40,6 @@ const musicReducer = (state = initialState, action) => {
       return state;
   }
 };
+
 
 export default musicReducer;

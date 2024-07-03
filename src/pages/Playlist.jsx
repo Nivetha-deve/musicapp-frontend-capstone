@@ -1,37 +1,58 @@
+/* eslint-disable react/prop-types */
 
-import { useSelector, useDispatch } from 'react-redux';
-import { removeSongFromPlaylist } from "../playlistForm"
+import  { useEffect, useState } from 'react';
 
-const Playlist = () => {
-  const playlists = useSelector(state => state.playlists);
-  const dispatch = useDispatch();
+const Playlist = ({ accessToken, playlistId, market }) => {
+  const [playlist, setPlaylist] = useState(null);
+  const [error, setError] = useState(null);
 
-  const handleRemoveSong = (songId, playlistName) => {
-    dispatch(removeSongFromPlaylist({ playlistName, songId }));
-  };
+  useEffect(() => {
+    const fetchPlaylist = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/api/playlist/${playlistId}?market=${market}`, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setPlaylist(data);
+      } catch (err) {
+        setError(err);
+      }
+    };
+
+    fetchPlaylist();
+  }, [accessToken, playlistId, market]);
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (!playlist) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="playlist-page">
-    <h2>Playlists</h2>
-    {Object.keys(playlists).length === 0 ? (
-      <p>No playlists available.</p>
-    ) : (
-      Object.keys(playlists).map(playlistName => (
-        <div key={playlistName}>
-          <h3>{playlistName}</h3>
-          <ul>
-            {playlists[playlistName].map(song => (
-              <li key={song.id}>
-                {song.name} by {song.artists.map(artist => artist.name).join(', ')}
-                <button onClick={() => handleRemoveSong(playlistName, song.id)}>Remove</button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))
-    )}
-  </div>
-);
+    <div>
+      <h1>{playlist.name}</h1>
+      <p>{playlist.description}</p>
+      <p>Owner: {playlist.owner.display_name}</p>
+      <p>Followers: {playlist.followers.total}</p>
+      <img src={playlist.images[0]?.url} alt={playlist.name} width="300" />
+      <ul>
+        {playlist.tracks.items.map((item, index) => (
+          <li key={index}>
+            {item.track.name} by {item.track.artists.map(artist => artist.name).join(', ')}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 export default Playlist;

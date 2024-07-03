@@ -1,7 +1,6 @@
 import { submitComment, updateLikedState } from "./musicAction";
 
 
-
 export const handleLikeSong = (dispatch, index) => {
     dispatch(updateLikedState(index));
     console.log(`Liked song at index ${index}`);

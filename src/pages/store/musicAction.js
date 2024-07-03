@@ -12,7 +12,7 @@ export const updateLikedState = (index) => ({
 export const addcomment = (comment) => ({
   type: ADD_COMMENT,
   payload: comment,
-});  
+}); 
   
   // Action creator to submit a comment
   export const submitComment = ({ index, comment }) => async (dispatch) => {

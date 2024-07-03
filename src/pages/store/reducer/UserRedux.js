@@ -42,6 +42,6 @@ const userRedux = createSlice({
         }
     }
 });
-
+  
 export const {clearUser , setUser } = userRedux.actions;
 export default  userRedux.reducer;
