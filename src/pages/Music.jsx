@@ -33,7 +33,6 @@ const Music = () => {
 
   useEffect(() => {
     setCurrentSongIndex(0); 
-    setPlaying(true); 
   }, [currentPlaylist]);
 
   const searchMusic = async () => {
