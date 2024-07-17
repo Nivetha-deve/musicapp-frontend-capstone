@@ -1,4 +1,4 @@
-import { submitComment, updateLikedState } from "./musicAction";
+import { addcomment, updateLikedState } from "./musicAction";
 
 
 export const handleLikeSong = (dispatch, index) => {
@@ -8,6 +8,6 @@ export const handleLikeSong = (dispatch, index) => {
   
   // Function to handle submitting a comment for a song
   export const handleCommentSubmit = (dispatch, index, comment) => {
-    dispatch(submitComment({ index, comment }));
+    dispatch(addcomment({ index, comment }));
     console.log(`Comment for song at index ${index}: ${comment}`);
   };

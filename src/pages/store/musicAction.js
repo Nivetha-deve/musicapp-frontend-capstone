@@ -14,3 +14,8 @@ export const addcomment = ({ index, comment }) => ({
   type: ADD_COMMENT,
   payload: { index, comment },
 });
+
+export const submitComment = ({ index, comment }) => ({
+  type: SUBMIT_COMMENT,
+  payload: { index, comment },
+});
