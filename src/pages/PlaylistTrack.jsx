@@ -8,7 +8,7 @@ const PlaylistTracks = ({ playlistId, market, fields, limit = 20, offset = 0, ad
   useEffect(() => {
     const fetchTracks = async () => {
       try {
-        const url = `http://localhost:8000/api/playlist/${playlistId}?limit=${limit}&offset=${offset}${market ? `&market=${market}` : ''}${fields ? `&fields=${fields}` : ''}${additionalTypes ? `&additional_types=${additionalTypes}` : ''}`;
+        const url = `https://musicapp-backend-capstone.onrender.com/api/playlist/${playlistId}?limit=${limit}&offset=${offset}${market ? `&market=${market}` : ''}${fields ? `&fields=${fields}` : ''}${additionalTypes ? `&additional_types=${additionalTypes}` : ''}`;
 
         const response = await fetch(url);
 

@@ -18,7 +18,8 @@ export const addcomment = (comment) => ({
   export const submitComment = ({ index, comment }) => async (dispatch) => {
     try {
       // Example: Send a request to the server to submit the comment
-      const response = await fetch('http://localhost:8000/api/comments', {
+      // const response = await fetch('http://localhost:8000/api/comments', {
+        const response = await fetch('https://musicapp-backend-capstone.onrender.com/api/comments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

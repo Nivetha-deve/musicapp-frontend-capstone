@@ -41,7 +41,8 @@ const Music = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:8000/api/search?q=${query}&type=${type}`)
+      // const response = await fetch(`http://localhost:8000/api/search?q=${query}&type=${type}`)
+      const response = await fetch(`https://musicapp-backend-capstone.onrender.com/api/search?q=${query}&type=${type}`)
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
@@ -219,95 +220,6 @@ const Music = () => {
   );
 };
 
-{/* <div className="music-search">
-<h1>Search Music</h1>
-<div className="music-play">
-  <input
-    type="text"
-    value={query}
-    onChange={(e) => setQuery(e.target.value)}
-    placeholder={`Search ${type}s...`}
-  />
-  <select value={type} onChange={(e) => setType(e.target.value)}>
-    <option value="track">Song Title</option>
-    <option value="artist">Artist</option>
-    <option value="album">Album</option>
-  </select>
-  <button onClick={searchMusic} disabled={loading}>
-    {loading ? 'Searching...' : 'Search'}
-  </button>
-</div>
-<div className="music-main">
-  {error && <p style={{ color: 'black' }}>{error}</p>}
-  {loading && <p>Loading...</p>}
-  <div className="results">
-    {results && results.length > 0 && results.map((item, index) => (
-      <div key={item.id}>
-        {type === 'track' && (
-          <>
-            <p>{item.name} by {item.artists.map(artist => artist.name).join(', ')}</p>
-            {item.preview_url && (
-              <ReactPlayer
-                controls
-                playing={currentUrl === item.preview_url && playing}
-                url={item.preview_url}
-                onEnded={handleEnded}
-                onPlay={() => {
-                  if (currentUrl !== item.preview_url) {
-                    setCurrentSongIndex(index);
-                    setCurrentUrl(item.preview_url);
-                    setPlaying(true);
-                  }
-                }}
-                onPause={() => {
-                  if (currentUrl === item.preview_url) {
-                    setPlaying(false);
-                  }
-                }}
-              />
-            )}
-            <button onClick={() => handleAddSong(item)}>+</button>
-            <button onClick={() => handlePlayPauseClick(item.preview_url, index)}>
-              {currentUrl === item.preview_url && playing ? 'Pause' : 'Play'}
-            </button>
-            <button onClick={() => handleLikeSong(dispatch, index)}>
-              <i className={likedSongs.includes(index) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}></i>
-            </button>
-            <form onSubmit={(e) => handleCommentFormSubmit(index, e)}>
-              <input
-                type="text"
-                name="comment"
-                value={comment[index] || ''}
-                onChange={(e) => handleCommentChange(index, e)}
-                placeholder="Add a comment..."
-              />
-              <button type="submit">Submit</button>
-            </form>
-            {comments[index] && (
-              <p>Comment: {comments[index]}</p>
-            )}
-          </>
-        )}
-        {type === 'artist' && (
-          <p>{item.name}</p>
-        )}
-        {type === 'album' && (
-           <p>{item.name} by {item.artists.map(artist => artist.name).join(', ')}</p>
-        )}
-      </div>
-    ))}
-  </div>
-</div>
-<div className="player-controls">
-  <button onClick={playPrevSong}>Prev</button>
-  <button onClick={togglePlayPause}>{playing ? 'Pause' : 'Play'}</button>
-  <button onClick={playNextSong}>Next</button>
-  <button onClick={toggleShuffle}>{shuffle ? 'Shuffle On' : 'Shuffle Off'}</button>
-  <button onClick={toggleRepeat}>{repeat ? 'Repeat On' : 'Repeat Off'}</button>
-</div>
-</div>
-);
-}; */}
 
 export default Music;
 
