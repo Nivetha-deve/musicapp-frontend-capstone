@@ -1,4 +1,5 @@
-import { UPDATE_LIKED_STATE, COMMENT_SUBMITTED, COMMENT_FAILED} from "../musicAction.js"
+/* eslint-disable no-case-declarations */
+import { UPDATE_LIKED_STATE, COMMENT_SUBMITTED, COMMENT_FAILED,ADD_COMMENT} from "../musicAction.js"
 
 // Initial state
 const initialState = {
@@ -7,7 +8,7 @@ const initialState = {
   error: null, // Error state for comment submission
 };
 
-// Reducer function
+
 const musicReducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_LIKED_STATE:
@@ -16,6 +17,16 @@ const musicReducer = (state = initialState, action) => {
         likedSongs: state.likedSongs.includes(action.payload)
           ? state.likedSongs.filter((index) => index !== action.payload) // Unlike if already liked
           : [...state.likedSongs, action.payload], // Like the song
+      };
+
+      case ADD_COMMENT:
+      const { index, comment } = action.payload;
+      return {
+        ...state,
+        comments: {
+          ...state.comment,
+          [index]: [...(state.comment[index] || []), comment],
+        },
       };
 
     case COMMENT_SUBMITTED: {

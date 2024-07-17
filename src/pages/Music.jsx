@@ -21,14 +21,13 @@ const Music = () => {
   const [shuffle, setShuffle] = useState(false);
   const [repeat, setRepeat] = useState(false);
   const [currentUrl, setCurrentUrl] = useState('');
-  const [comment, setComment] = useState([]);
+  const [comment, setComment] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const playlists = useSelector(state => state.playlists && state.playlists.playlists);
   const currentPlaylist = playlists && playlists['My Playlist'] ? playlists['My Playlist'] : [];
-  const comments = useSelector((state) => state.music.comments || []);
+  const comments = useSelector((state) => state.music.comments || {});
   const likedSongs = useSelector((state) => state.music.likedSongs || []);
-  //const comments = useSelector((state) => state.comment.comment);
 
 
   useEffect(() => {
@@ -40,14 +39,12 @@ const Music = () => {
     setLoading(true);
 
     try {
-      // const response = await fetch(`http://localhost:8000/api/search?q=${query}&type=${type}`)
       const response = await fetch(`https://musicapp-backend-capstone.onrender.com/api/search?q=${query}&type=${type}`)
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
 
       const data = await response.json();
-      //setResults(data || []);
       setResults(data[type + "s"]?.items || []);
     } catch (error) {
       console.error('Error fetching data from server:', error.message);
@@ -125,17 +122,14 @@ const Music = () => {
   const handleCommentFormSubmit = (index, e) => {
     e.preventDefault();
     const commentValue = comment[index];
-    dispatch(addcomment(commentValue));
-
-    const newComments = [...comment];
-     newComments[index] = ''; 
-    setComment(newComments);
+    if (commentValue) {
+    dispatch(addcomment({ index, comment: commentValue }));
+    setComment(prev => ({ ...prev, [index]: '' }));
   }
+}
 
   const handleCommentChange = (index, e) => {
-    const newComments = [...comment];
-    newComments[index] = e.target.value;
-    setComment(newComments);
+  setComment(prev => ({ ...prev, [index]: e.target.value }));
   };
 
 
@@ -193,17 +187,17 @@ const Music = () => {
                     <input
                       type="text"
                       name="comment"
-                      value={comments[index]}
+                      value={comment[index] || ""}
                       onChange={(e) => handleCommentChange(index, e)}
                       placeholder="Add a comment..."
                     />
                     <button type="submit">Submit</button>
                   </form>
-                  {comments[index] && (
-                    <p>Comment: {comments[index]}</p>
-                  )}
-                    </>
-                  )}
+                   {comments[index] && comments[index].map((commentText, commentIndex) => (
+                   <p key={commentIndex}>Comment: {commentText}</p> 
+                  ))}
+                </>
+                )}
                     </div>
                   ))}
             </div>
