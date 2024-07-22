@@ -143,7 +143,7 @@ const Music = () => {
           onChange={(e) => setQuery(e.target.value)}
           placeholder={`Search ${type}s...`}
         />
-        <button onClick={searchMusic} disabled={loading}>
+        <button className='btn' onClick={searchMusic} disabled={loading}>
           {loading ? 'Searching...' : 'Search'}
         </button>
       </div>
@@ -202,11 +202,11 @@ const Music = () => {
                   ))}
             </div>
       <div className="player-controls">
-        <button onClick={playPrevSong}>Prev</button>
-        <button onClick={togglePlayPause}>{playing ? 'Pause' : 'Play'}</button>
-        <button onClick={playNextSong}>Next</button>
-        <button onClick={toggleShuffle}>{shuffle ? 'Shuffle On' : 'Shuffle Off'}</button>
-        <button onClick={toggleRepeat}>{repeat ? 'Repeat On' : 'Repeat Off'}</button>
+        <button className='btn' onClick={playPrevSong}>Prev</button>
+        <button className='btn' onClick={togglePlayPause}>{playing ? 'Pause' : 'Play'}</button>
+        <button className='btn' onClick={playNextSong}>Next</button>
+        <button className='btn' onClick={toggleShuffle}>{shuffle ? 'Shuffle On' : 'Shuffle Off'}</button>
+        <button className='btn' onClick={toggleRepeat}>{repeat ? 'Repeat On' : 'Repeat Off'}</button>
       </div>
     </div>
     </div>

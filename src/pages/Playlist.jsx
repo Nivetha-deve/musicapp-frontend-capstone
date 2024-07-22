@@ -9,7 +9,6 @@ const Playlist = ({ accessToken, playlistId, market }) => {
   useEffect(() => {
     const fetchPlaylist = async () => {
       try {
-        // const response = await fetch(`http://localhost:8000/api/playlist/${playlistId}?market=${market}`, {
           const response = await fetch(`https://musicapp-backend-capstone.onrender.com/api/playlist/${playlistId}?market=${market}`, {
           headers: {
             'Authorization': `Bearer ${accessToken}`
