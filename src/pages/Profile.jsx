@@ -37,7 +37,7 @@ const Profile = () => {
 
 
   return (
-    <div className="container mt-4">
+    <div className="container-1 mt-4">
       <div className="row">
         <div className="col-md-6 offset-md-3">
           <div className="card">
