@@ -190,7 +190,7 @@ return(
               )}
             </div>
             <button type="submit" className="btn btn-primary">Register</button>
-            <Link to="/login" className="btn-login" style={{ fontSize: 20, margin: 20,}} >Login</Link>  
+            <Link to="/login" className="btn btn-primary" style={{fontSize:16, margin: 20,}} >Login</Link>  
         </form>
         </div>
         </div>

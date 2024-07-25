@@ -20,7 +20,7 @@ body {
 }
 
 .container mt-4{
-  color: black;
+  color: rgb(19, 12, 12);
 }
 .home-container{
    display: flex;
@@ -54,7 +54,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  color: rgb(12, 11, 11);
+  color: rgb(233, 233, 233);
 }
 
 .nav-container {
@@ -144,12 +144,10 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 6px 8px var(--shadow-color);
 }
-
 .btn:active {
   transform: translateY(0);
   box-shadow: 0 2px 4px var(--shadow-color);
 } 
-
 .music-player {
   background-color: rgba(20, 20, 40, 0.7);
   backdrop-filter: blur(15px);
@@ -252,3 +250,4 @@ body {
               0 0 15px var(--primary-color),
               0 0 20px var(--primary-color);
 }
+ 

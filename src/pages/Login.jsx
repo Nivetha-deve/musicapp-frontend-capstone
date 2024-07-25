@@ -82,7 +82,7 @@ const LoginForm = () => {
                 )}
                 </div>
                 <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>Login</button>
-            <Link to="/register" className='btn-login' style={{margin: 20, fontSize: 20}} >Register</Link>
+            <Link to="/register" className='btn btn-primary' style={{margin: 15, fontSize: 16}} >Register</Link>
           </form>
           </div>
           </div>
